@@ -1,0 +1,28 @@
+Fundamentals of Robotics eLearning assignment
+
+Use google, wikipedia to locate answers to the following questions.
+DO NOT COPY AND PASTE ANSWERS. THIS WILL GET YOU A ZERO.
+
+Where was the word robot first used?
+
+What is the difference between remote control and autonomy?
+
+What is an automaton?
+
+How are robots programmed?
+
+What is a robot teach pendant?
+
+How is a teach pendant used with a robot?
+
+What is the difference between open loop and closed loop systems in robots?
+
+What is artificial intelligence in robots?
+
+What are some applications of robots in industry?
+
+Watch this 30 second video: https://www.youtube.com/watch?v=LikxFZZO2sk
+
+What is Boston Dynamics?
+
+Is there any concern that the rob
