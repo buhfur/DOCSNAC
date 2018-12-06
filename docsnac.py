@@ -38,11 +38,10 @@ Please use this software as a means of auto-completing your assignments |
 
 TYPE QUIT TO END APPLICATION
 
--Please enter the directory of your text file you wish to have the answers
-  located.
+-Please enter the directory of your text file that has all the questions.
+
   
--answers to your questions will be put in the file you submit unless 
- you type:
+
       
 
 
@@ -74,7 +73,9 @@ import time
 import os
 import sys
 from googlesearch import search
-
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+#TODO: need to add more exceptions so testers can tell me what happened
 
 class TextFile:
     """
@@ -89,11 +90,13 @@ class TextFile:
         #parse the file and look for questions
         if not self.filename[-1].endswith('.txt'): #check to make sure file is text
             return "Error: file needs to be text file"
+            #ADD EXCEPTION HERE!!
         else:
             print("------------------------------------------------------")
             with open(self.filename[-1], 'r') as read_file:
                 file_data = read_file.read()
                 list_of_questions = []
+                print("parsing %s for questions...." % self.filename)
 
                 for line_in_file in file_data.split('\n'):
                     if line_infile.endswith("?"):
@@ -115,13 +118,28 @@ class SearchQuestions:
             #search for answer here
             found_urls = search(query_question, num=10) #get 10 results
             #make get request to web page
-            list_of_urls = [url for url in found_urls]
+            list_of_urls = [url for url in found_urls] 
 
             #parse through list_of_urls and make get requests
             for url in list_of_urls:
-                page_request = requests.get(url)
                 #download all text off of page
-
+                _htmldoc = urlopen(url)
+                _soup = BeautifulSoup(html_doc)
+                
+                #parse all the javascript out of the text 
+                for script in _soup(["script", "style"]):
+                  script.decompose() 
+                 
+                 _text = soup.get_text()
+                 
+                 lines = [line.strip() for line in _text.splitlines()]
+                 
+                 chunk = [phrase.strip() for line in lines for phrase in line.split(' ')]
+                 _text = '\n'.join(chunk for chunk in chunks if chunk)
+                 
+                 #now write the question text to new  file unless stated other wise
+                 
+                
 
 
 
