@@ -1,7 +1,7 @@
 #Ryan McVicker
 #12/3/2018
 
-#command line tool that automatically finds answers to parsed questions in document
+#command line interface that automatically finds answers to parsed questions in document
 # ex: python bookworm.py <filename>
 
 second_text = """
@@ -40,6 +40,10 @@ TYPE QUIT TO END APPLICATION
 
 -Please enter the directory of your text file you wish to have the answers
   located.
+  
+-answers to your questions will be put in the file you submit unless 
+ you type:
+      
 
 
  _________________________________________
@@ -53,7 +57,14 @@ ________________________________________________________________________________
                 WARNING:
             i am not responsible for any misuse of this program be it through
             plagiarism or any other abuse
-
+ 
+ 
+ |------------------------------------------|
+ |         LIST OF COMMANDS                 |
+ |------------------------------------------|
+ |  enter text file: <FILENAMEHERE>         
+ |  change default answer file: python mkfile.py <filename>
+ |  
 
 
 """
