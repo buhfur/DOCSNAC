@@ -15,6 +15,16 @@ def main():
         soup = BeautifulSoup(html_doc, 'html.parser')
         print(soup.get_text())
         print("________________________________________________________________")
+        
+        
+def sub():
+    question = "how to tie a tie?"
+    searchq = search(question, num=2)
+    list_of_urls = [url for url in searchq]
+    url = list_of_urls[0]
+    
+    for x in 
+    
 
 
 if __name__ == '__main__':
