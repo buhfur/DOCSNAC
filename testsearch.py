@@ -2,45 +2,64 @@ from googlesearch import search
 from bs4 import BeautifulSoup
 import requests
 import os
-
+from urllib.request import urlopen
 
 
 def main():
-    #method that searches for a question
-    question = "http error 503?"
-    searchq = search(question, num=2)
+    question = "how to tie a tie?"
+    searchq = search(question, num=10)
     list_of_urls = [url for url in searchq]
     for url in list_of_urls:
         page_request = requests.get(url)
         html_doc = page_request.text
         soup = BeautifulSoup(html_doc, 'html.parser')
-        print(soup.get_text())
+        for js_text in soup(["script","style"]):
+            soup.decompose() #rips out javascript and css
+
+        text = soup.get_text()
+        print(text.encode('utf-8'))
         print("________________________________________________________________")
-        
-        
-def sub(question):
-    
-    #search the question on google
-    searchq = search(question, num=2)
-    #create a list of urls returned from searchq
-    list_of_urls = [url for url in searchq]
-    #index the first url due to timeout restraint
-    url = list_of_urls[0]
-    #parse through soup([]) for the elements returned 
-    for script in soup(["script","style"]):
-        #delete the elements returned 
-        script.decompose() 
-     #get all text from the modified soup
-    text = soup.get_text() 
-    #what does this do????
-    lines = (line.strip() for line in text.splitlines()
-    #what does this do???
-    chunks = (phrase.strip() for line in lines for phase in line.split("  "))
-    print(text.encode('utf-8'))
-    
+
+
+
+
+def sub(url):
+
+    #COPIED FROM : https://stackoverflow.com/questions/22799990/beatifulsoup4-get-text-still-has-javascript
+    html = urlopen(url).read()
+    soup = BeautifulSoup(html, 'html.parser')
+
+    # kill all script and style elements
+    for script in soup(["script", "style"]):
+        script.decompose()    # rip it out
+
+    # get text
+    text = soup.get_text()
+
+    # break into lines and remove leading and trailing space on each
+    lines = (line.strip() for line in text.splitlines())
+    # break multi-headlines into a line each
+    chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+    # drop blank lines
+    text = '\n'.join(chunk for chunk in chunks if chunk)
+
+    print(text)
+
+
+def test_text_file(filename):
     try:
-             #check if file exists 
-             
- 
+        from docsnac import TextFile
+
+    except ImportError:
+        print("couldent load module")
+
+    textFileObj = TextFile(filename)
+    print(textFileObj.get_file_name())
+
+
+
 if __name__ == '__main__':
-    main()
+    #main()
+
+    filename = "C:\tDOCSNAC\texample.txt"
+    test_text_file(filename)
