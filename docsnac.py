@@ -5,7 +5,7 @@
 # ex: python bookworm.py <filename>
 
 second_text = """
-v1.4.18--
+v1.1--
 
 ▓█████▄  ▒█████   ▄████▄    ██████  ███▄    █  ▄▄▄       ▄████▄
 ▒██▀ ██▌▒██▒  ██▒▒██▀ ▀█  ▒██    ▒  ██ ▀█   █ ▒████▄    ▒██▀ ▀█
@@ -18,46 +18,26 @@ v1.4.18--
    ░        ░ ░  ░ ░            ░           ░       ░  ░░ ░
  ░               ░                                      ░
 
-================================================================================
-This is book worm. your tool for auto completing your
-assignments
-
---------------------------------------------------------------------------------
-Made by : Ryan McVicker
-
-Date : 12/3/2018
-
 ________________________________________________________________________________
-
-
-
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+This is docsnac your tool for auto completing your
+assignments
+________________________________________________________________________________
+Made by : Ryan McVicker
+________________________________________________________________________________
+Date : 12/3/2018
+________________________________________________________________________________
 Please use this software as a means of auto-completing your assignments |
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
+________________________________________________________________________________
 TYPE QUIT TO END APPLICATION
 
 -Please enter the directory of your text file that has all the questions.
-
-
-
-
-
-
  _________________________________________
 |       WHAT DOES THIS PROGRAM DO????    |
 -----------------------------------------
 |   1. finds the predicted answer to your questions on a text file
 |   2. uses an algorithm to enter the characters as if you are the one who typed it
 |   3. saves the anwers to a text document which you can then upload to google classroom
-       (or type the answers found yourself to be safe :p)
 ________________________________________________________________________________
-                WARNING:
-            i am not responsible for any misuse of this program be it through
-            plagiarism or any other abuse
-
-
  |------------------------------------------|
  |         LIST OF COMMANDS                 |
  |------------------------------------------|
@@ -67,10 +47,11 @@ ________________________________________________________________________________
 
 
 """
-
-
+import random
+import sys
 import time
 import os
+from colorama import Fore, Style, init
 from googlesearch import search
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
@@ -78,79 +59,80 @@ from bs4 import BeautifulSoup
 
 
 class SearchQuestions:
+    def __init__(self):
+        #plan to do more with this later....
+        return
 
     def write_to_file(self, text):
         #algorithm for fake-typing
 
         #parse through the text
-        for new in text:
-            print(new)
+        print("_" * 43)
+        print(text)
 
 
 
-
-
-        return file
 
     """
-    return : <returns list of questions parsed from file
+    return : <returns list of questions parsed from file>
     """
-    def parse_file(self, dir):
+    @staticmethod
+    def parse_file(directory):
         #split list to get filename at end of dir string
-        self.filename = dir.split('\t')[-1]
+        filename = directory.split('\t')[-1]
         #check to make sure file is text file
-        if not self.filename.endswith('.txt'):
+        if not filename.endswith('.txt'):
             return "Error: file needs to be text file"
             #ADD EXCEPTION HERE!!
         else:
             #line to keep things clean
-            print("------------------------------------------------------")
+            print("-" * 43)
             #open the file for reading
-            with open(self.filename, 'r') as read_file:
-                file_data = read_file.read()
-                list_of_questions = []
-                print("parsing %s for questions...." % self.filename)
-                #parse list for all questions and add them to an array
-                for line_in_file in file_data.split('\n'):
-                    if line_in_file.endswith("?"):
-                        list_of_questions.append(line_in_file)
-                #call in-class method to search for questions
-                self.search_questions(list_of_questions)
-                #return list in case of alternate way to store questions
-                #or search them
+            with open(filename, 'r') as read_file:
+                print("parsing %s for questions...." % filename)
+                #list comprehension for all questions and adds them to an array
+                list_of_questions = [line_in_file for line_in_file in read_file.read().split('\n')
+                                    if line_in_file.endswith("?")]
+
                 return list_of_questions
 
 
     def search_questions(self, array_of_questions):
-        #create separate file for questions and answers
-
-
 
         for question in array_of_questions:
-            #search for answer here
-            found_urls = search(question, num=10) #get 10 results
-            #make get request to web page
-            list_of_urls = [url for url in found_urls]
+            #list comprehension of urls found from google search
+            list_of_urls = [url for url in search(question, num=10)]
 
-            #parse through list_of_urls and make get requests
-            for url in list_of_urls:
-                #download all text off of page
-                _htmldoc = urlopen(url)
-                _soup = BeautifulSoup(html_doc)
+            IS_VALID_URL = False
+            while IS_VALID_URL == False:
+                try:
 
-                #parse all the javascript out of the text
-                for script in _soup(["script", "style"]):
-                    script.decompose()
+                    _url = random.choice(list_of_urls)
+                    _soup = BeautifulSoup(urlopen(_url))
+                    #if valid url, exit loop
+                    IS_VALID_URL = True
+                    for script in _soup(["script", "style"]):
+                        script.decompose()
 
-                 _text = soup.get_text()
+                    #get text from soup
+                    _text = _soup.get_text()
 
-                 lines = [line.strip() for line in _text.splitlines()]
+                    #lines = [line.strip() for line in _text.splitlines()]
 
-                 chunk = [phrase.strip() for line in lines for phrase in line.split(' ')]
-                 _text = '\n'.join(chunk for chunk in chunks if chunk)
+                    #chunks = [phrase.strip() for line in lines for phrase in line.split(' ')]
 
-                 #now write the question text to new  file unless stated other wise
-                 self.write_to_file()
+                    #_text = '\n'.join(chunk for chunk in chunks if chunk)
+
+                    self.write_to_file(_text.split('\n'))
+
+
+
+                except Exception as e:
+                    pass
+
+
+            #now write the question text to new  file unless stated other wise
+
 
 
 
@@ -164,11 +146,35 @@ class SearchQuestions:
 if __name__ == '__main__':
 
     print(second_text)
+    #init() filters out any ANSI codes, thus starting colorama
+    init()
+    print(Fore.RED + ' \t\tWARNING:\n \ti am not responsible for any misuse of this program be it through\n \tplagiarism or any other abuse')
+    #restore stdin to its normal state, diabling colorama
+    print(Style.RESET_ALL)
     while True:
-        question_file = input("""
-        =====================
-        | ENTER DIR NAME HERE | : """)
-        if user_input == "quit":
-            break
 
-        SearchQuestions.parse_file(question_file)
+        question_file = input("""
+        \n\n
+        _______________________
+        | ENTER DIR NAME HERE | :  """)
+
+        if question_file == "quit":
+            #end the program
+            sys.exit()
+
+        while not os.path.exists(question_file):
+
+            question_file = input("""
+            \n\n
+            _______________________
+            | ENTER DIR NAME HERE | :  """)
+
+
+        try:
+
+            search_questions_obj = SearchQuestions()
+            array_of_questions = search_questions_obj.parse_file(question_file)
+            search_questions_obj.search_questions(array_of_questions)
+
+        except Exception as e:
+            pass 
