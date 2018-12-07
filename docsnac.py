@@ -71,7 +71,6 @@ ________________________________________________________________________________
 
 import time
 import os
-import sys
 from googlesearch import search
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
@@ -80,33 +79,45 @@ from bs4 import BeautifulSoup
 
 class SearchQuestions:
 
-    def write_to_file(self):
-        #algorithm for fake-typing, creating the new file to be
-        return
-        
+    def write_to_file(self, text):
+        #algorithm for fake-typing
+
+        #parse through the text
+        for new in text:
+            print(new)
+
+
+
+
+
+        return file
+
     """
     return : <returns list of questions parsed from file
     """
     def parse_file(self, dir):
-
+        #split list to get filename at end of dir string
         self.filename = dir.split('\t')[-1]
-
-        #parse the file and look for questions
-        if not self.filename.endswith('.txt'): #check to make sure file is text file
+        #check to make sure file is text file
+        if not self.filename.endswith('.txt'):
             return "Error: file needs to be text file"
             #ADD EXCEPTION HERE!!
         else:
+            #line to keep things clean
             print("------------------------------------------------------")
+            #open the file for reading
             with open(self.filename, 'r') as read_file:
                 file_data = read_file.read()
                 list_of_questions = []
                 print("parsing %s for questions...." % self.filename)
-
+                #parse list for all questions and add them to an array
                 for line_in_file in file_data.split('\n'):
                     if line_in_file.endswith("?"):
                         list_of_questions.append(line_in_file)
+                #call in-class method to search for questions
                 self.search_questions(list_of_questions)
-
+                #return list in case of alternate way to store questions
+                #or search them
                 return list_of_questions
 
 
