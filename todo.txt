@@ -1,0 +1,5 @@
+    to do for docsnac:
+    
+    1. solve error with 403 http error
+    2. create algorithm for the fake typing
+    
