@@ -51,6 +51,7 @@ import random
 import sys
 import time
 import os
+import requests
 from colorama import Fore, Style, init
 from googlesearch import search
 from urllib.request import urlopen
@@ -102,7 +103,11 @@ class SearchQuestions:
         for question in array_of_questions:
             #list comprehension of urls found from google search
             list_of_urls = [url for url in search(question, num=10)]
-
+			#validate urls and make sure they return a response
+			for url in list_of_urls:
+				request = requests.get(url)
+				#use the requests module to validate urls
+								
             IS_VALID_URL = False
             while IS_VALID_URL == False:
                 try:
