@@ -61,6 +61,7 @@ def test_answer_dict():
 
     question_file = "C:\tDOCSNAC\tfirst.txt"
     array_of_questions = SearchQuestions.parse_directory_file(question_file)
+    print(array_of_questions)
     question_dict = SearchQuestions.search_questions(array_of_questions)
     #how to parse dict? cleanly
     for key in question_dict:
@@ -76,3 +77,4 @@ if __name__ == '__main__':
 
     #filename = "C:\tDOCSNAC\texample.txt"
     #test_text_file(filename)
+    test_answer_dict()

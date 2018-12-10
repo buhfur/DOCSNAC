@@ -128,18 +128,11 @@ class SearchQuestions:
                 for script in _soup(["script", "style"]):
                     script.decompose()
 
+
                 #get text from soup
                 _text = _soup.get_text()
 
-                #lines = [line.strip() for line in _text.splitlines()]
 
-                #chunks = [phrase.strip() for line in lines for phrase in line.split(' ')]
-
-                #_text = '\n'.join(chunk for chunk in chunks if chunk)
-
-
-
-                q_and_a[question] = _text
 
                 return q_and_a
 
