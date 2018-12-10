@@ -38,8 +38,7 @@ TYPE QUIT TO END APPLICATION
 |   2. uses an algorithm to enter the characters as if you are the one who typed it
 |   3. saves the anwers to a text document which you can then upload to google classroom
 ________________________________________________________________________________
- NOTE: Answer file will be placed in answers.txt. if it already exists, you
- will be prompted to enter a new one :)
+
 
 
 """
