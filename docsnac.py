@@ -113,12 +113,12 @@ class SearchQuestions:
     """ <return> : returns a dictionary of [question:answer] form """
     @staticmethod
     def search_questions(array_of_questions):
-
+        q_and_a = {}
         for question in array_of_questions:
             #list comprehension of urls found from google search
             list_of_urls = [url for url in search(question, num=10)]
 
-            q_and_a = {}
+            
 
             try:
 
