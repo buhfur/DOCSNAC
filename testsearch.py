@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 import os
 from urllib.request import urlopen
-
+from docsnac import SearchQuestions
 
 def main():
     question = "how to tie a tie?"
@@ -57,9 +57,22 @@ def test_text_file(filename):
     print(textFileObj.get_file_name())
 
 
+def test_answer_dict():
+
+    question_file = "C:\tDOCSNAC\tfirst.txt"
+    array_of_questions = SearchQuestions.parse_directory_file(question_file)
+    question_dict = SearchQuestions.search_questions(array_of_questions)
+    #how to parse dict? cleanly
+    for key in question_dict:
+        print(key)
+
+
+
+    #SearchQuestions.write_to_file(question_dict, filename=None)
+
 
 if __name__ == '__main__':
     #main()
 
-    filename = "C:\tDOCSNAC\texample.txt"
-    test_text_file(filename)
+    #filename = "C:\tDOCSNAC\texample.txt"
+    #test_text_file(filename)

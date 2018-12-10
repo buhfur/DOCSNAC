@@ -38,12 +38,8 @@ TYPE QUIT TO END APPLICATION
 |   2. uses an algorithm to enter the characters as if you are the one who typed it
 |   3. saves the anwers to a text document which you can then upload to google classroom
 ________________________________________________________________________________
- |------------------------------------------|
- |         LIST OF COMMANDS                 |
- |------------------------------------------|
- |  enter text file: <FILENAMEHERE>
- |  change default answer file: python mkfile.py <filename>
- |
+ NOTE: Answer file will be placed in answers.txt. if it already exists, you
+ will be prompted to enter a new one :)
 
 
 """
@@ -51,7 +47,6 @@ import random
 import sys
 import time
 import os
-import requests
 from colorama import Fore, Style, init
 from googlesearch import search
 from urllib.request import urlopen
@@ -60,17 +55,34 @@ from bs4 import BeautifulSoup
 
 
 class SearchQuestions:
-    def __init__(self):
-        #plan to do more with this later....
-        return
 
-    def write_to_file(self, text):
+    @staticmethod
+    def write_to_file(text, filename=None):
         #algorithm for fake-typing
 
         #parse through the text
-        print("_" * 43)
-        print(text)
+        if filename is None:
+            #prompt user to enter file name
+            filename = input("ENTER NAME FOR ANSWER FILE: ")
+            #need to add more space here
+        print("_" * 100)
+        print("writing to file.....")
+        if os.path.exists(filename):
+            #prompt user to enter a new file name
+            print("appending to end of file.....")
 
+            """ PARSE THROUGH DICT HERE NOT STR """
+
+
+            with open(filename, 'a') as write_file:
+                write_file.write(text)
+
+
+        else:
+
+            print("creating new file %s" % filename)
+            with open(filename, 'w') as write_file:
+                write_file.write(text)
 
 
 
@@ -78,7 +90,7 @@ class SearchQuestions:
     return : <returns list of questions parsed from file>
     """
     @staticmethod
-    def parse_file(directory):
+    def parse_directory_file(directory):
         #split list to get filename at end of dir string
         filename = directory.split('\t')[-1]
         #check to make sure file is text file
@@ -98,46 +110,41 @@ class SearchQuestions:
                 return list_of_questions
 
 
-    def search_questions(self, array_of_questions):
+    """ <return> : returns a dictionary of [question:answer] form """
+    @staticmethod
+    def search_questions(array_of_questions):
 
         for question in array_of_questions:
             #list comprehension of urls found from google search
             list_of_urls = [url for url in search(question, num=10)]
-			#validate urls and make sure they return a response
-			for url in list_of_urls:
-				request = requests.get(url)
-				#use the requests module to validate urls
-								
-            IS_VALID_URL = False
-            while IS_VALID_URL == False:
-                try:
 
-                    _url = random.choice(list_of_urls)
-                    _soup = BeautifulSoup(urlopen(_url))
-                    #if valid url, exit loop
-                    IS_VALID_URL = True
-                    for script in _soup(["script", "style"]):
-                        script.decompose()
+            q_and_a = {}
 
-                    #get text from soup
-                    _text = _soup.get_text()
+            try:
 
-                    #lines = [line.strip() for line in _text.splitlines()]
+                _url = random.choice(list_of_urls)
+                _soup = BeautifulSoup(urlopen(_url))
+                IS_VALID_URL = True
+                for script in _soup(["script", "style"]):
+                    script.decompose()
 
-                    #chunks = [phrase.strip() for line in lines for phrase in line.split(' ')]
+                #get text from soup
+                _text = _soup.get_text()
 
-                    #_text = '\n'.join(chunk for chunk in chunks if chunk)
+                #lines = [line.strip() for line in _text.splitlines()]
 
-                    self.write_to_file(_text.split('\n'))
+                #chunks = [phrase.strip() for line in lines for phrase in line.split(' ')]
+
+                #_text = '\n'.join(chunk for chunk in chunks if chunk)
 
 
 
-                except Exception as e:
-                    pass
+                q_and_a[question] = _text
 
+                return q_and_a
 
-            #now write the question text to new  file unless stated other wise
-
+            except Exception as e:
+                print("line 138: %s" % e)
 
 
 
@@ -177,9 +184,10 @@ if __name__ == '__main__':
 
         try:
 
-            search_questions_obj = SearchQuestions()
-            array_of_questions = search_questions_obj.parse_file(question_file)
-            search_questions_obj.search_questions(array_of_questions)
+
+            array_of_questions = SearchQuestions.parse_directory_file(question_file)
+            question_dict = SearchQuestions.search_questions(array_of_questions)
+            SearchQuestions.write_to_file(question_dict, filename=None)
 
         except Exception as e:
-            pass 
+            print(e)
