@@ -53,6 +53,7 @@ from bs4 import BeautifulSoup
 #TODO: need to add more exceptions so testers can tell me what happened
 
 
+
 class SearchQuestions:
 
     @staticmethod
@@ -97,7 +98,7 @@ class SearchQuestions:
             return "Error: file needs to be text file"
             #ADD EXCEPTION HERE!!
         else:
-            #line to keep things clean
+            
             print("-" * 43)
             #open the file for reading
             with open(filename, 'r') as read_file:
@@ -105,7 +106,7 @@ class SearchQuestions:
                 #list comprehension for all questions and adds them to an array
                 list_of_questions = [line_in_file for line_in_file in read_file.read().split('\n')
                                     if line_in_file.endswith("?")]
-
+                #returns the list of questions
                 return list_of_questions
 
 
