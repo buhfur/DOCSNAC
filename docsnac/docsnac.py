@@ -52,7 +52,8 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 #TODO: need to add more exceptions so testers can tell me what happened
 
-
+def shorten_text(text, encoding='UTF-8', length=None):
+    #encoding is set to utf as default
 
 class SearchQuestions:
 
@@ -131,10 +132,10 @@ class SearchQuestions:
 
                 #get text from soup
                 _text = _soup.get_text()
-
-
-
-                return q_and_a
+                shorten_text(_text, char=80) #PROPOSED METHOD
+    
+                 #returns the text 
+                return _text
 
             except Exception as e:
                 print("line 138: %s" % e)
