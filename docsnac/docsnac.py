@@ -1,14 +1,12 @@
 #Ryan McVicker
 #12/3/2018
 
-#command line interface that automatically finds answers to parsed questions in document
-# ex: python bookworm.py <filename>
+#should be able to take raw text or a text file as input for any of these methods
 
 import random
 import sys
 import time
 import os
-from colorama import Fore, Style, init
 from googlesearch import search
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
@@ -25,23 +23,26 @@ def shorten_text(text,length=40):
 
 
 
+""" this method takes in some text and possibly a filename. if there is no filename,
+it prompts the user to enter a name for the file. after the user picks a name it checks
+if the file exists on the disk, if it does, it appends the text to the end of the File.
+If the file doesnt exist it creates the file on the disk and then immediately writes the text
+to the file.
 
+"""
 def write_to_file(text, filename=None):
 
-    #algorithm for fake-typing
 
     #parse through the text
     if filename is None:
         #prompt user to enter file name
         filename = input("ENTER NAME FOR ANSWER FILE: ")
-        #need to add more space here
     print("_" * 100)
-    print("writing to file.....")
-    if os.path.exists(filename):
-        #prompt user to enter a new file name
-        print("appending to end of file.....")
 
-        """ PARSE THROUGH DICT HERE NOT STR """
+    print("writing to file.....")
+    #checks if the file exists
+    if os.path.exists(filename):
+        print("appending to end of file.....")
 
 
         with open(filename, 'a') as write_file:
@@ -56,14 +57,20 @@ def write_to_file(text, filename=None):
 
 
 
-#what is this method used for ?
+
+
+"""this method takes in a dir and then looks for a file, then checks if its a text file,
+then looks for a lines with a '?' at the end of it. if it does have said character, then
+it adds it to an array, and then returns it
+"""
 def parse_directory_file(directory):
     #split list to get filename at end of dir string
     filename = directory.split('\t')[-1]
     #check to make sure file is text file
     if not filename.endswith('.txt'):
+
          return "Error: file needs to be text file"
-           #ADD EXCEPTION HERE!!
+
     else:
 
         print("-" * 43)
@@ -76,7 +83,13 @@ def parse_directory_file(directory):
             #returns the list of questions
             return list_of_questions
 
-
+"""this method takes in an array of questions to search online using google.
+it begins by parsing the array_of_questions thus creating a list comprehension of
+urls found on google related to the question. afterward it randomly selects a url from the
+list 'list_of_urls' in order to search for text, as well as creating a soup object with
+the returned text from the google search. after obtaining some text, it parses through the soup
+object, decomposing and 
+"""
 
 def search_questions(array_of_questions):
     q_and_a = {}
@@ -90,8 +103,6 @@ def search_questions(array_of_questions):
             _url = random.choice(list_of_urls)
 
             _soup = BeautifulSoup(urlopen(_url))
-
-            IS_VALID_URL = True
 
             for script in _soup(["script", "style"]):
 
