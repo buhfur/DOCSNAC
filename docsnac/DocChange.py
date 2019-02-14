@@ -30,6 +30,10 @@ class DocChange:
                                 dest_file.write(input_file_word)
                             except Exception as e:
                                 dest_file.write(word)
+
                     except Exception as e:
                         print(e)
-                        
+
+        else:
+            for word in input:
+                 new_word = random.choice(Word(word).synonyms())
